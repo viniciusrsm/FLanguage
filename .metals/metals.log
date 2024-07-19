@@ -5708,3 +5708,46 @@ jul. 19, 2024 7:55:43 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancella
 ADVERTÊNCIA: Unmatched cancel notification for request id 29546
 jul. 19, 2024 7:55:51 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
 ADVERTÊNCIA: Unmatched cancel notification for request id 29570
+jul. 19, 2024 7:58:33 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTÊNCIA: Unmatched cancel notification for request id 29682
+jul. 19, 2024 8:00:38 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+ADVERTÊNCIA: Unmatched cancel notification for request id 29691
+2024.07.19 20:02:34 INFO  Shutting down server
+2024.07.19 20:02:34 INFO  shutting down Metals
+2024.07.19 20:02:34 INFO  Shut down connection with build server.
+2024.07.19 20:02:34 INFO  Exiting server
+2024.07.19 20:03:08 INFO  Started: Metals version 1.3.3 in folders 'C:\Users\Vinicius\UnB\FLanguage' for client Visual Studio Code 1.91.1.
+SLF4J(W): Class path contains multiple SLF4J providers.
+SLF4J(W): Found provider [scribe.slf4j.ScribeServiceProvider@1dfbd676]
+SLF4J(W): Found provider [ch.qos.logback.classic.spi.LogbackServiceProvider@3f1adfc8]
+SLF4J(W): See https://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J(I): Actual provider is of type [scribe.slf4j.ScribeServiceProvider@1dfbd676]
+2024.07.19 20:03:08 WARN  Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2024.07.19 20:03:10 INFO  no build target found for C:\Users\Vinicius\UnB\FLanguage\src\main\scala\br\unb\cic\flang\Declarations.scala. Using presentation compiler with project's scala-library version: 3.3.3
+2024.07.19 20:03:10 INFO  Attempting to connect to the build server...
+2024.07.19 20:03:10 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at C:\Users\Vinicius\UnB\FLanguage\.metals\bsp.trace.json or C:\Users\Vinicius\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2024.07.19 20:03:10 INFO  time: Connected to build server in 0.6s
+2024.07.19 20:03:10 INFO  Connected to Build server: Bloop v1.6.0
+2024.07.19 20:03:13 INFO  running doctor check
+2024.07.19 20:03:13 INFO  java targets: root-test, root
+2024.07.19 20:03:15 WARN  Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2024.07.19 20:03:16 INFO  time: indexed workspace in 3.48s
+2024.07.19 20:10:18 INFO  Shutting down server
+2024.07.19 20:10:18 INFO  shutting down Metals
+2024.07.19 20:10:18 INFO  Shut down connection with build server.
+2024.07.19 20:10:18 INFO  Exiting server
+2024.07.19 20:13:57 INFO  Started: Metals version 1.3.3 in folders 'C:\Users\Vinicius\UnB\FLanguage' for client Visual Studio Code 1.91.1.
+SLF4J(W): Class path contains multiple SLF4J providers.
+SLF4J(W): Found provider [scribe.slf4j.ScribeServiceProvider@ae0bbd5]
+SLF4J(W): Found provider [ch.qos.logback.classic.spi.LogbackServiceProvider@7f88863e]
+SLF4J(W): See https://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J(I): Actual provider is of type [scribe.slf4j.ScribeServiceProvider@ae0bbd5]
+2024.07.19 20:13:58 WARN  Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2024.07.19 20:13:58 INFO  Attempting to connect to the build server...
+2024.07.19 20:13:58 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at C:\Users\Vinicius\UnB\FLanguage\.metals\bsp.trace.json or C:\Users\Vinicius\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2024.07.19 20:13:58 INFO  time: Connected to build server in 0.42s
+2024.07.19 20:13:58 INFO  Connected to Build server: Bloop v1.6.0
+2024.07.19 20:13:59 INFO  running doctor check
+2024.07.19 20:13:59 INFO  java targets: root-test, root
+2024.07.19 20:14:05 WARN  Flyway upgrade recommended: H2 2.2.224 is newer than this version of Flyway and support has not been tested. The latest supported version of H2 is 2.2.220.
+2024.07.19 20:14:05 INFO  time: indexed workspace in 7.39s
