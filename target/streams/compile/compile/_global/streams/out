@@ -1,5 +1,0 @@
-[0m[[0m[33mwarn[0m] [0m[0mC:\Users\Vinicius\UnB\FLanguage\src\main\scala\br\unb\cic\flang\Interpreter2.scala:24:5: match may not be exhaustive.[0m
-[0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: App(_, _)[0m
-[0m[[0m[33mwarn[0m] [0m[0m    expr match {[0m
-[0m[[0m[33mwarn[0m] [0m[0m    ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
