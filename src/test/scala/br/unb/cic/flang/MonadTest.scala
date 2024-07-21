@@ -1,32 +1,26 @@
 package br.unb.cic.flang
 
-import br.unb.cic.flang.Interpreter._
+
 import cats.data.State
 import org.scalatest._
 
 import flatspec._
 import matchers._
-import MonadState._
+import Interpreter._
+import MonadStateError._
+import MonadStateError.eh.raiseError
 import Declarations._
+import cats.data.StateT
+
 
 class MonadTest extends AnyFlatSpec with should.Matchers {
 
-  val inc = FDeclaration("inc", "x", Add(Id("x"), CInt(1)))
-
-  val declarations = List(inc)
-
   val initialState: S = List()
 
-  "pure" should "run and return 10" in {
-    val step1 = pure(10)
-    val (b, res) = runState(step1)(initialState)
-
-    res should be(10)
-  }
-
-  "put" should "run and return List((1, test))" in {
+  "set" should "run and return List((1, test))" in {
     val step1 = set(List((1, "test")))
-    val (res, _) = runState(step1)(initialState)
+    val (res, _) = runState(step1)(initialState).getOrElse((None, None))
+
 
     res should be(List((1, "test")))
   }
@@ -34,7 +28,7 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
   "get" should "List((5,test))" in {
     val step1 = get
     val state: S = List((5, "test"))
-    val (_, res) = runState(step1)(state)
+    val (_, res) = runState(step1)(state).getOrElse((None, None))
 
     res should be(List((5,"test")))
   }
@@ -50,8 +44,19 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
     val test1 = declareVar("test_1", 10, initialState)
     val test2 = declareVar("test_2", 20, test1)
 
-    val res = lookupVar("test_2", test2)
+    val look = lookupVar("test_2", test2)
+    val (_, res) = runState(look)(test2).getOrElse((None, None))
 
     res should be(20)
   }
+
+  "lookupVar" should "raise error on empty list" in {
+
+    val look = lookupVar("test_2", List())
+    val res = runState(look)(List()).getOrElse(None)
+
+    res should be(None)
+  }
+
+  
 }
