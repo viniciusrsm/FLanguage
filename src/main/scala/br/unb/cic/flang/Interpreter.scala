@@ -8,24 +8,20 @@ import MonadStateError.eh.raiseError
 object Interpreter{
   def eval(expr: Expr, declarations: List[FDeclaration]): ErrorOrState[Either[Boolean,Integer]] =
     expr match {
-      case Add(lhs, rhs) if lhs.isInstanceOf[CBool] || rhs.isInstanceOf[CBool] => raiseError("Invalid boolean arg provided")
-      case Mul(lhs, rhs) if lhs.isInstanceOf[CBool] || rhs.isInstanceOf[CBool] => raiseError("Invalid boolean arg provided")
       case CInt(v) => pure(Right(v))
       case CBool(v) => pure(Left(v))
-      //case CBool(v) => pure(if (v == true) 1 else 0)
-      case IfThenElse(eIf, eThen, eElse) => for {
+      case IfThenElse(eIf, eThen, eElse) if eIf.isInstanceOf[CBool] => for {
         evalIf <- eval(eIf, declarations)
         val evalIfBool = evalIf.fold(l => l, _ => 0)
         res <- if (evalIfBool == true) eval(eThen, declarations) else eval(eElse, declarations)
-        //res <- eval(eElse, declarations)
       } yield res
-      case Add(lhs, rhs) => for {
+      case Add(lhs, rhs) if !lhs.isInstanceOf[CBool] && !rhs.isInstanceOf[CBool] => for {
         l <- eval(lhs, declarations)
         r <- eval(rhs, declarations)
         val lInt:Integer = l.getOrElse(0)
         val rInt:Integer = r.getOrElse(0)
       } yield Right(lInt + rInt)
-      case Mul(lhs, rhs) => for {
+      case Mul(lhs, rhs) if !lhs.isInstanceOf[CBool] && !rhs.isInstanceOf[CBool] => for {
         l <- eval(lhs, declarations)
         r <- eval(rhs, declarations)
         val lInt:Integer = l.getOrElse(0)
@@ -42,5 +38,6 @@ object Interpreter{
         s2 <- set(declareVar(fdecl.arg, value.getOrElse(0), s1))
         res <- eval(fdecl.body, declarations)
       } yield res
+      case _ => raiseError("Invalid eval expression provided")
     }
 }

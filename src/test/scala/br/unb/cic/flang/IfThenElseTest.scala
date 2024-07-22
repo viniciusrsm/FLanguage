@@ -19,26 +19,26 @@ class IfThenElseTest extends AnyFlatSpec with should.Matchers {
 
   "if CInt(5) = 5" should "return 15" in {
     val c5 = CInt(5)
-    val (_, res) = runState(eval(c5, declarations))(initialState).getOrElse((None, None))
-    val eIf = CBool(res == Right(5))
+    val (_, res) = runState(eval(c5, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val eIf = CBool(res == 5)
     val eThen = Add(CInt(5), CInt(10))
     val eElse = Mul(CInt(5), CInt(10))
     val exp = IfThenElse(eIf, eThen, eElse)
-    val (_, res2) = runState(eval(exp, declarations))(initialState).getOrElse((None, None))
+    val (_, res2) = runState(eval(exp, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
     
-    res2 should be (Right(15))
+    res2 should be (15)
   }
 
   "if CInt(5) = 6" should "return 50" in {
     val c5 = CInt(5)
-    val (_, res) = runState(eval(c5, declarations))(initialState).getOrElse((None, None))
-    val eIf = CBool(res == Right(6))
+    val (_, res) = runState(eval(c5, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val eIf = CBool(res == 6)
     val eThen = Add(CInt(5), CInt(10))
     val eElse = Mul(CInt(5), CInt(10))
     val exp = IfThenElse(eIf, eThen, eElse)
-    val (_, res2) = runState(eval(exp, declarations))(initialState).getOrElse((None, None))
+    val (_, res2) = runState(eval(exp, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
     
-    res2 should be (Right(50))
+    res2 should be (50)
   }
 
   "if true" should "return true" in {
@@ -46,10 +46,11 @@ class IfThenElseTest extends AnyFlatSpec with should.Matchers {
     val eThen = CBool(true)
     val eElse = CBool(false)
     val exp = IfThenElse(eIf, eThen, eElse)
-    val (_, res) = runState(eval(exp, declarations))(initialState).getOrElse((None, None))
+    val (_, res) = runState(eval(exp, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
 
+    println(res)
     
-    res should be (Left(false))
+    res shouldBe (true)
   }
 
   "if false" should "return false" in {
@@ -57,9 +58,8 @@ class IfThenElseTest extends AnyFlatSpec with should.Matchers {
     val eThen = CBool(true)
     val eElse = CBool(false)
     val exp = IfThenElse(eIf, eThen, eElse)
-    val (_, res) = runState(eval(exp, declarations))(initialState).getOrElse((None, None))
+    val (_, res) = runState(eval(exp, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
     
-    res should be (Left(false))
+    res shouldBe (false)
   }
-
 }
