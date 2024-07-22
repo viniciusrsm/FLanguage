@@ -2,6 +2,8 @@ package br.unb.cic.flang
 
 
 import cats.data.State
+import cats.data.StateT
+import cats.syntax.traverse._
 import org.scalatest._
 
 import flatspec._
@@ -10,7 +12,6 @@ import Interpreter._
 import MonadStateError._
 import MonadStateError.eh.raiseError
 import Declarations._
-import cats.data.StateT
 
 
 class MonadTest extends AnyFlatSpec with should.Matchers {
@@ -19,15 +20,17 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
 
   "set" should "run and return List((1, test))" in {
     val step1 = set(List((1, "test")))
-    val (res, _) = runState(step1)(initialState).getOrElse((None, None))
+    val (res, a) = runState(step1)(initialState).getOrElse((None, None))
 
-
+    
     res should be(List((1, "test")))
   }
 
   "get" should "List((5,test))" in {
     val step1 = get
     val state: S = List((5, "test"))
+    println(step1.run(state))
+
     val (_, res) = runState(step1)(state).getOrElse((None, None))
 
     res should be(List((5,"test")))

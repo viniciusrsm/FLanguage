@@ -1,7 +1,9 @@
 package br.unb.cic.flang
 
-import cats.data.StateT
 import cats.MonadError
+import cats.data.StateT
+
+import scala.reflect.ClassTag
 
 package object MonadStateError {
     type MError[A] = Either[String, A]
@@ -14,7 +16,7 @@ package object MonadStateError {
 
     def pure[A](a: A): ErrorOrState[A] = StateT.pure(a)
 
-    def runState[A](m: ErrorOrState[A])(initial: S): Either[String, (S, A)] = m.run(initial)
+    def runState[A](m: ErrorOrState[A])(initial: S): (Either[String, (S, A)]) = m.run(initial)
 
     def set(s: S): ErrorOrState[Unit] = StateT.set(s)
 

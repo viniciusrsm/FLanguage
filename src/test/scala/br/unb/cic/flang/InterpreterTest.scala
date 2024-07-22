@@ -14,14 +14,13 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
 
   val declarations = List(inc)
 
-  val initialState: S = List()
-  
+  val initialState: S = List()  
 
   "eval CInt(5)" should "return an integer value 5." in {
     val c5 = CInt(5)
     val (_, res) = runState(eval(c5, declarations))(initialState).getOrElse((None, None))
     
-    res should be (5)
+    res should be (Right(5))
   }
 
   "eval Add(CInt(5), CInt(10)) " should "return an integer value 15." in {
@@ -29,7 +28,7 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
     val c10 = CInt(10)
     val add = Add(c5, c10)
     val (_, res) = runState(eval(add, declarations))(initialState).getOrElse((None, None))
-    res should be (15)
+    res should be (Right(15))
   }
 
   "eval Add(CInt(5), Add(CInt(5), CInt(10))) " should "return an integer value 20." in {
@@ -37,27 +36,31 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
     val c10 = CInt(10)
     val add = Add(c5, Add(c5, c10))
     val (_, res) = runState(eval(add, declarations))(initialState).getOrElse((None, None))
-    res should be(20)
+    res should be(Right(20))
   }
 
   "eval Mul(CInt(5), CInt(10))" should "return an integer value 50" in {
     val c5 = CInt(5)
     val c10 = CInt(10)
     val mul = Mul(c5, CInt(10))
+    val (_, res2) = eval(mul, declarations).run(initialState).getOrElse(0)
+    
     val (_, res) = runState(eval(mul, declarations))(initialState).getOrElse((None, None))
-    res should be(50)
+    res should be(Right(50))
   }
 
   "eval App(inc, 99) " should "return an integer value 100" in {
     val app = App("inc", CInt(99))
     val (_, res) = runState(eval(app, declarations))(initialState).getOrElse((None, None))
 
-    res should be (100)
+
+    res should be (Right(100))
   }
 
   "eval App with empty list" should "return Left (None)" in {
     val app = App("inc", CInt(99))
     val (_, res) = runState(eval(app, List()))(initialState).getOrElse((None, None))
+
 
     res should be (None)
   }
