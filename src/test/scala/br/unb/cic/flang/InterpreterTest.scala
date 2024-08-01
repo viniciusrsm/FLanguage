@@ -18,7 +18,7 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
 
   "eval CInt(5)" should "return an integer value 5." in {
     val c5 = CInt(5)
-    val (_, res) = runState(eval(c5, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val (_, res) = eval(c5, declarations).run(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
     
     res should be (5)
   }
@@ -27,7 +27,7 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
     val c5  = CInt(5)
     val c10 = CInt(10)
     val add = Add(c5, c10)
-    val (_, res) = runState(eval(add, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val (_, res) = eval(add, declarations).run(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
     res should be (15)
   }
 
@@ -35,7 +35,7 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
     val c5 = CInt(5)
     val c10 = CInt(10)
     val add = Add(c5, Add(c5, c10))
-    val (_, res) = runState(eval(add, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val (_, res) = eval(add, declarations).run(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
     res should be(20)
   }
 
@@ -44,20 +44,20 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
     val c10 = CInt(10)
     val mul = Mul(c5, CInt(10))
 
-    val (_, res) = runState(eval(mul, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val (_, res) = eval(mul, declarations).run(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
     res should be(50)
   }
 
   "eval App(inc, 99) " should "return an integer value 100" in {
     val app = App("inc", CInt(99))
-    val (_, res) = runState(eval(app, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val (_, res) = eval(app, declarations).run(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
 
     res should be (100)
   }
 
-  "eval App with empty list" should "return 'Function inc is not declared' error" in {
+  "eval App with empty declarations list" should "return 'Function inc is not declared' error" in {
     val app = App("inc", CInt(99))
-    val (_, res) = runState(eval(app, List()))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val (_, res) = eval(app, List()).run(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
 
 
     res should be ("Function inc is not declared")
@@ -65,21 +65,21 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
 
   "Add(Integer + Boolean)" should "return 'Invalid boolean arg provided' error" in {
     val mul = Add(CInt(5), CBool(false))
-    val (_, res) = runState(eval(mul, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val (_, res) = eval(mul, declarations).run(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
 
     res should be ("Invalid eval expression provided")
   }
 
   "Mul(Boolean + Integer)" should "return 'Invalid boolean arg provided' error" in {
     val mul = Add(CBool(false), CInt(15))
-    val (_, res) = runState(eval(mul, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val (_, res) = eval(mul, declarations).run(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
 
     res should be ("Invalid eval expression provided")
   }
 
   "If CInt(5)" should "return 'Invalid boolean arg provided' error" in {
     val mul = IfThenElse(CInt(5), CInt(10), CInt(15))
-    val (_, res) = runState(eval(mul, declarations))(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
+    val (_, res) = eval(mul, declarations).run(initialState).fold(l => (None, l), r => r._2.fold(rl => (r._1, rl), rr => (r._1, rr)))
 
     res should be ("Invalid eval expression provided")
   }

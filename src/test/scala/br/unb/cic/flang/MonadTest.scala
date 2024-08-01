@@ -20,7 +20,7 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
 
   "set" should "run and return List((1, test))" in {
     val step1 = set(List((1, "test")))
-    val (res, a) = runState(step1)(initialState).fold(l => (None, l), r => r)
+    val (res, a) = step1.run(initialState).fold(l => (None, l), r => r)
 
     
     res should be(List((1, "test")))
@@ -29,9 +29,8 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
   "get" should "List((5,test))" in {
     val step1 = get
     val state: S = List((5, "test"))
-    println(step1.run(state))
 
-    val (_, res) = runState(step1)(state).fold(l => (None, l), r => r)
+    val (_, res) = step1.run(state).fold(l => (None, l), r => r)
 
     res should be(List((5,"test")))
   }
@@ -48,15 +47,15 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
     val test2 = declareVar("test_2", 20, test1)
 
     val look = lookupVar("test_2", test2)
-    val (_, res) = runState(look)(test2).fold(l => (None, l), r => r)
+    val (_, res) = look.run(test2).fold(l => (None, l), r => r)
 
     res should be(20)
   }
 
-  "lookupVar" should "return 'Function test_2 is not declared' error" in {
+  "lookupVar with empty list" should "return 'Function is not declared' error" in {
 
     val look = lookupVar("test_2", List())
-    val (_, res) = runState(look)(List()).fold(l => (None, l), r => r)
+    val (_, res) = look.run(List()).fold(l => (None, l), r => r)
 
     res should be("Function test_2 is not declared")
   }

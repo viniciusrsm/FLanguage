@@ -16,8 +16,6 @@ package object MonadStateError {
 
     def pure[A](a: A): ErrorOrState[A] = StateT.pure(a)
 
-    def runState[A](m: ErrorOrState[A])(initial: S): (Either[String, (S, A)]) = m.run(initial)
-
     def set(s: S): ErrorOrState[Unit] = StateT.set(s)
 
     def get: ErrorOrState[S] = StateT.get
