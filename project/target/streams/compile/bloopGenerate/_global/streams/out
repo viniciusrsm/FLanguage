@@ -1,4 +1,4 @@
-[debug] [flanguage-build] Classpath dependencies List()
-[debug] [flanguage-build] Dependencies from configurations List()
-[debug] Bloop wrote the configuration of project 'flanguage-build' to 'C:\Users\Vinicius\UnB\FLanguage\project\.bloop\flanguage-build.json'
-[success] Generated .bloop\flanguage-build.json
+[0m[[0m[0mdebug[0m] [0m[0m[flanguage-build] Classpath dependencies List()[0m
+[0m[[0m[0mdebug[0m] [0m[0m[flanguage-build] Dependencies from configurations List()[0m
+[0m[[0m[0mdebug[0m] [0m[0mBloop wrote the configuration of project 'flanguage-build' to 'C:\Users\Vinicius\UnB\FLanguage\project\.bloop\flanguage-build.json'[0m
+[0m[[0m[32msuccess[0m] [0m[0mGenerated .bloop\flanguage-build.json[0m

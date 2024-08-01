@@ -1,9 +1,9 @@
 package br.unb.cic.flang
 
-import br.unb.cic.flang.Interpreter._
 import cats.data.State
 import org.scalatest._
 
+import Interpreter._
 import flatspec._
 import matchers._
 import MonadState._
@@ -19,14 +19,14 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
 
   "pure" should "run and return 10" in {
     val step1 = pure(10)
-    val (b, res) = runState(step1)(initialState)
+    val (_, res) = step1.run(initialState).value
 
     res should be(10)
   }
 
   "put" should "run and return List((1, test))" in {
     val step1 = set(List((1, "test")))
-    val (res, _) = runState(step1)(initialState)
+    val (res, _) = step1.run(initialState).value
 
     res should be(List((1, "test")))
   }
@@ -34,7 +34,7 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
   "get" should "List((5,test))" in {
     val step1 = get
     val state: S = List((5, "test"))
-    val (_, res) = runState(step1)(state)
+    val (_, res) = step1.run(state).value
 
     res should be(List((5,"test")))
   }

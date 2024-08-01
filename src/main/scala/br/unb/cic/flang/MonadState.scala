@@ -12,8 +12,6 @@ package object MonadState {
 
     def pure[A](a: A): MState[A] = State.pure(a)
 
-    def runState[A](m: MState[A])(initial: S): (S, A) = m.run(initial).value
-
     def set(s: S): MState[Unit] = State.set(s)
 
     def get: MState[S] = State.get
