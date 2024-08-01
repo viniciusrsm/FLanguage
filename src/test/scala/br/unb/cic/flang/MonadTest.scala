@@ -2,6 +2,7 @@ package br.unb.cic.flang
 
 
 import cats.data.State
+import cats.data.StateT
 import org.scalatest._
 
 import flatspec._
@@ -10,7 +11,6 @@ import Interpreter._
 import MonadStateError._
 import MonadStateError.eh.raiseError
 import Declarations._
-import cats.data.StateT
 
 
 class MonadTest extends AnyFlatSpec with should.Matchers {
@@ -19,7 +19,7 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
 
   "set" should "run and return List((1, test))" in {
     val step1 = set(List((1, "test")))
-    val (res, _) = runState(step1)(initialState).getOrElse((None, None))
+    val (res, _) = step1.run(initialState).fold(l => (None, l), r => r)
 
 
     res should be(List((1, "test")))
@@ -28,7 +28,7 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
   "get" should "List((5,test))" in {
     val step1 = get
     val state: S = List((5, "test"))
-    val (_, res) = runState(step1)(state).getOrElse((None, None))
+    val (_, res) = step1.run(state).fold(l => (None, l), r => r)
 
     res should be(List((5,"test")))
   }
@@ -45,17 +45,17 @@ class MonadTest extends AnyFlatSpec with should.Matchers {
     val test2 = declareVar("test_2", 20, test1)
 
     val look = lookupVar("test_2", test2)
-    val (_, res) = runState(look)(test2).getOrElse((None, None))
+    val (_, res) = look.run(test2).fold(l => (None, l), r => r)
 
     res should be(20)
   }
 
-  "lookupVar" should "raise error on empty list" in {
+  "lookupVar with empty list" should "raise error 'Function is not declared'" in {
 
     val look = lookupVar("test_2", List())
-    val res = runState(look)(List()).getOrElse(None)
+    val (_, res) = look.run(List()).fold(l => (None, l), r => r)
 
-    res should be(None)
+    res should be("Function test_2 is not declared")
   }
 
   

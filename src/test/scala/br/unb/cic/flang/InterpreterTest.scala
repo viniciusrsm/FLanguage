@@ -19,7 +19,7 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
 
   "eval CInt(5)" should "return an integer value 5." in {
     val c5 = CInt(5)
-    val (_, res) = runState(eval(c5, declarations))(initialState).getOrElse((None, None))
+    val (_, res) = eval(c5, declarations).run(initialState).fold(l => (None, l), r => r)
     
     res should be (5)
   }
@@ -28,7 +28,7 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
     val c5  = CInt(5)
     val c10 = CInt(10)
     val add = Add(c5, c10)
-    val (_, res) = runState(eval(add, declarations))(initialState).getOrElse((None, None))
+    val (_, res) = eval(add, declarations).run(initialState).fold(l => (None, l), r => r)
     res should be (15)
   }
 
@@ -36,7 +36,7 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
     val c5 = CInt(5)
     val c10 = CInt(10)
     val add = Add(c5, Add(c5, c10))
-    val (_, res) = runState(eval(add, declarations))(initialState).getOrElse((None, None))
+    val (_, res) = eval(add, declarations).run(initialState).fold(l => (None, l), r => r)
     res should be(20)
   }
 
@@ -44,22 +44,22 @@ class InterpreterTest extends AnyFlatSpec with should.Matchers {
     val c5 = CInt(5)
     val c10 = CInt(10)
     val mul = Mul(c5, CInt(10))
-    val (_, res) = runState(eval(mul, declarations))(initialState).getOrElse((None, None))
+    val (_, res) = eval(mul, declarations).run(initialState).fold(l => (None, l), r => r)
     res should be(50)
   }
 
   "eval App(inc, 99) " should "return an integer value 100" in {
     val app = App("inc", CInt(99))
-    val (_, res) = runState(eval(app, declarations))(initialState).getOrElse((None, None))
+    val (_, res) = eval(app, declarations).run(initialState).fold(l => (None, l), r => r)
 
     res should be (100)
   }
 
-  "eval App with empty list" should "return Left (None)" in {
+  "eval App with empty declarations list" should "return 'Function inc is not declared'" in {
     val app = App("inc", CInt(99))
-    val (_, res) = runState(eval(app, List()))(initialState).getOrElse((None, None))
+    val (_, res) = eval(app, List()).run(initialState).fold(l => (None, l), r => r)
 
-    res should be (None)
+    res should be ("Function inc is not declared")
   }
 
 }
