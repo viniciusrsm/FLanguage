@@ -16,8 +16,9 @@ class FLParserSpec extends AnyFlatSpec with Matchers {
   }
 
     "The FLParser" should "Give a pirueta" in {
-    parser.parse(parser.expr, "10 * 2 + 10") should matchPattern { case parser.Success(Add(Mul(CInt(10), CInt(2)), CInt(10)), _) => }
-    parser.parse(parser.expr, "if 1 then 2 else 10") should matchPattern { case parser.Success(IfThenElse(CInt(1), CInt(2), CInt(10)), _) => }
+    parser.parse(parser.expr, "if 10 == 10 then 10 else 20") should matchPattern { case parser.Success(IfThenElse(CBool(true), CInt(10), CInt(20)), _) => }
+    parser.parse(parser.expr, "if 10 >= 10 then 10 else 20") should matchPattern { case parser.Success(IfThenElse(CBool(true), CInt(10), CInt(20)), _) => }
+    parser.parse(parser.expr, "if 10 < 10 then 10 else 20") should matchPattern { case parser.Success(IfThenElse(CBool(false), CInt(10), CInt(20)), _) => }
     
   }
 
