@@ -4,26 +4,12 @@ import scala.util.parsing.combinator._
 
 class FLParser extends RegexParsers {
 
-  def expr : Parser[Expr] = (factor | ifThenElse | fdef)
+  def expr : Parser[Expr] = (term | ifThenElse | fdef)
 
-  def ifThenElse: Parser[Expr] = "if" ~ comparison ~ "then" ~ expr ~ "else" ~ expr ^^ { case _ ~ c ~ _ ~ e1 ~ _ ~ e2 => IfThenElse(c, e1, e2) }
+  def ifThenElse: Parser[Expr] = "?" ~ comparison ~ "then" ~ term ~ "else" ~ term ^^ { case _ ~ c ~ _ ~ e1 ~ _ ~ e2 => IfThenElse(c, e1, e2) }
 
-  def factor : Parser[Expr] = term ~ rep("+" ~ term) ^^ { 
-    case t ~ Nil => t 
-    case t ~ ops => ops.foldLeft(t) { case (left, "+" ~ right) => Add(left, right) }
-  }
-
-  def term: Parser[Expr] = const ~ rep("*" ~ const) ^^ {
-    case f ~ Nil => f
-    case f ~ ops => ops.foldLeft(f) { case (left, "*" ~ right) => Mul(left, right) }
-  }
-  
-  def const : Parser[Expr] = """0|[1-9]\d*""".r ^^ { n => CInt(n.toInt)}
-
-  def fdef : Parser[Expr] =  
-
-/// EValuation Of Comparisons
-
+// Comparison Macthes
+    
   def comparison: Parser[Expr] = (equalTo | greaterOrEqualTo | lessThan) 
 
   def equalTo: Parser[Expr] = const ~ "==" ~ const ^^ {
@@ -37,6 +23,32 @@ class FLParser extends RegexParsers {
   def lessThan: Parser[Expr] = const ~ "<" ~ const ^^ {
     case CInt(e1) ~ _ ~ CInt(e2) => CBool(e1 < e2)
   }
+
+// --------------------------------------------------------------------
+
+  def fdef : Parser[Expr] = "@" ~ """\w+""".r ~ "(" ~ """\w+""".r ~ ")" ~ "=>" ~ "{" ~ term ~ "}" ^^ {
+      case _ ~ funcName ~ _ ~ argu ~ _ ~ _ ~ _ ~ body ~ _ => FDeclaration(funcName, argu, body)
+  }
+
+  def term : Parser[Expr] = factor ~ rep("+" ~ factor) ^^ { 
+    case t ~ Nil => t 
+    case t ~ ops => ops.foldLeft(t) { case (left, "+" ~ right) => Add(left, right) }
+  }
+
+  def factor : Parser[Expr] = value ~ rep("*" ~ value) ^^ {
+    case f ~ Nil => f
+    case f ~ ops => ops.foldLeft(f) { case (left, "*" ~ right) => Mul(left, right) }
+  }
+
+  def value : Parser[Expr] = (const | app | id )
+
+  def app : Parser[Expr] = """\w+""".r ~ "(" ~ term ~ ")" ^^ {
+    case funcName ~ _ ~ expsub ~ _ => App(funcName, expsub)
+  }
+  def const : Parser[Expr] = """0|[1-9]\d*""".r ^^ { n => CInt(n.toInt)}
+
+  def id : Parser[Expr] = """\w+""".r ^^ { name => Id(name)}
+
 }
 
 

@@ -9,3 +9,4 @@ case class Add(lhs: Expr, rhs: Expr) extends Expr
 case class Mul(lhs: Expr, rhs: Expr) extends Expr
 case class Id(name: String) extends Expr
 case class App(name: String, arg: Expr) extends Expr
+case class FDeclaration(name: String, arg: String, body: Expr) extends Expr

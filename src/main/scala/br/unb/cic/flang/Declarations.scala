@@ -3,7 +3,6 @@ package br.unb.cic.flang
 import br.unb.cic.flang.MonadStateError._
 import br.unb.cic.flang.MonadStateError.eh.raiseError
 
-case class FDeclaration(name: String, arg: String, body: Expr)
 
 object Declarations {
 
